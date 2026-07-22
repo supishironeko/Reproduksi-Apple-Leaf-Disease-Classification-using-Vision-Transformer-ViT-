@@ -32,24 +32,8 @@ The dataset is divided using a hold-out strategy:
 
 The dataset structure:
 dataset/
+<img width="1254" height="1254" alt="struktur folder" src="https://github.com/user-attachments/assets/6b42f6ea-dd57-45b8-b13e-02c8d320f899" />
 
-├── Train
-│ ├── Apple Scab
-│ ├── Black Rot
-│ ├── Cedar Apple Rust
-│ └── Healthy
-│
-├── Val
-│ ├── Apple Scab
-│ ├── Black Rot
-│ ├── Cedar Apple Rust
-│ └── Healthy
-│
-└── Test
-├── Apple Scab
-├── Black Rot
-├── Cedar Apple Rust
-└── Healthy
 
 
 ---
