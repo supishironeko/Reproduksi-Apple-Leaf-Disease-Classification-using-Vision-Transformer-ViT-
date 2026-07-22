@@ -22,7 +22,25 @@ Black Rot
 Cedar Apple Rust
 Healthy
 
-The dataset is divided using a hold-out strategy:
+
+The dataset is publicly available and can be accessed through the following link:
+
+Dataset Link:
+[https://www.kaggle.com/xxxxx](https://www.kaggle.com/datasets/tushar5harma/plant-village-dataset-updated?select=Apple)
+
+> **Note:**  
+> The Kaggle dataset has been updated and now contains more images than the original version used in this experiment.  
+> To reproduce the exact experimental results, download only the **Train** folder from the Kaggle dataset.  
+> The downloaded Train folder contains **7,771 images**, matching the dataset size used in this experiment.  
+> The Validation and Test sets were not taken directly from Kaggle; they were created manually using a hold-out split strategy:
+>
+> - Training set: 70%
+> - Validation set: 15%
+> - Testing set: 15%
+>
+> Therefore, after downloading the Train folder, the remaining dataset split should be generated manually to maintain consistency with this experiment.
+
+The dataset contains images of apple leaves categorized into different disease classes. In this experiment, the dataset was prepared using a hold-out split strategy:
 
 | Dataset | Percentage |
 |---------|------------|
@@ -30,8 +48,8 @@ The dataset is divided using a hold-out strategy:
 | Validation | 15% |
 | Testing | 15% |
 
-The dataset structure:
-dataset/
+The dataset structure after preprocessing:
+
 <img width="1254" height="1254" alt="struktur folder" src="https://github.com/user-attachments/assets/6b42f6ea-dd57-45b8-b13e-02c8d320f899" />
 
 
