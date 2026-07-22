@@ -1,91 +1,229 @@
 # Apple Leaf Disease Classification using Vision Transformer (ViT)
 
-This repository contains a Python script for classifying apple leaf diseases using a Vision Transformer (ViT) model. The dataset used is the Plant Village dataset, which contains images of apple leaves with four classes: Healthy, Apple Scab, Black Rot, and Cedar Apple Rust. The script includes data preprocessing, model training, and evaluation steps.
+This project implements a Vision Transformer (ViT) model for classifying apple leaf diseases using the Plant Village dataset. The experiment focuses on analyzing the effect of different patch sizes in Vision Transformer architecture to determine the optimal configuration for apple leaf disease classification.
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Code Explanation](#code-explanation)
-- [Steps for Implementation](#steps-for-implementation)
-- [Example Usage](#example-usage)
-- [Conclusion](#conclusion)
+The experiment evaluates three different patch sizes:
 
----
+- Patch Size 32×32
+- Patch Size 16×16
+- Patch Size 8×8
 
-## Introduction
-
-The goal of this project is to classify apple leaf diseases using a Vision Transformer (ViT) model. The dataset is divided into four classes: Healthy, Apple Scab, Black Rot, and Cedar Apple Rust. The script includes data preprocessing, model training, and evaluation steps.
+The objective of this experiment is to analyze the trade-off between feature representation capability and computational complexity in Vision Transformer models.
 
 ---
 
-## Code Explanation
+# Dataset
 
-### 1. **Importing Libraries**
-   - The script starts by importing necessary libraries such as `matplotlib`, `seaborn`, `numpy`, `pandas`, `tensorflow`, and `sklearn`. These libraries are used for data visualization, data manipulation, and building/training the deep learning model.
+The dataset used in this experiment is the **Plant Village Apple Leaf Disease Dataset**.
 
-### 2. **Visualizing the Dataset**
-   - The `walk_through_dir` function is used to explore the dataset directory structure and count the number of images in each class.
-   - The dataset is divided into `Train`, `Val`, and `Test` directories, each containing subdirectories for the four classes.
+The dataset consists of four classes:
+Apple Scab
+Black Rot
+Cedar Apple Rust
+Healthy
 
-### 3. **Data Augmentation**
-   - The script uses `ImageDataGenerator` from Keras to apply data augmentation techniques such as rotation, horizontal flipping, and rescaling to the training data. This helps in improving the model's generalization ability.
-   - Separate generators are created for training, validation, and test datasets.
+The dataset is divided using a hold-out strategy:
 
-### 4. **Patch Visualization**
-   - The script defines a `Patches` layer that extracts patches from the images. This is a crucial step in Vision Transformers, where images are divided into smaller patches that are then processed by the transformer.
-   - The script visualizes these patches for different patch sizes (32x32, 16x16, 8x8) to understand how the image is divided.
+| Dataset | Percentage |
+|---------|------------|
+| Training | 70% |
+| Validation | 15% |
+| Testing | 15% |
 
-### 5. **Model Training**
-   - The script defines a Vision Transformer (ViT) model using TensorFlow and Keras. The model is compiled with the Adam optimizer and categorical cross-entropy loss.
-   - The model is trained for a specified number of epochs, and the training history is stored for later analysis.
+The dataset structure:
+dataset/
 
-### 6. **Model Evaluation**
-   - After training, the model is evaluated on the test dataset. The script generates a confusion matrix and a classification report to assess the model's performance.
-   - The confusion matrix is visualized using `seaborn` to provide a clear understanding of the model's predictions.
+├── Train
+│ ├── Apple Scab
+│ ├── Black Rot
+│ ├── Cedar Apple Rust
+│ └── Healthy
+│
+├── Val
+│ ├── Apple Scab
+│ ├── Black Rot
+│ ├── Cedar Apple Rust
+│ └── Healthy
+│
+└── Test
+├── Apple Scab
+├── Black Rot
+├── Cedar Apple Rust
+└── Healthy
 
-### 7. **Visualizing Misclassified Images**
-   - The script includes functionality to visualize misclassified images, which helps in understanding where the model is making errors.
-
-### 8. **Fine-Tuning and Learning Rate Adjustment**
-   - The script demonstrates how to fine-tune the model by adjusting the learning rate and re-training the model.
-
----
-
-## Steps for Implementation
-
-1. **Dataset Preparation**
-   - Ensure that the dataset is organized into `Train`, `Val`, and `Test` directories, with each directory containing subdirectories for each class (Healthy, Apple Scab, Black Rot, Cedar Apple Rust).
-
-2. **Install Required Libraries**
-   - Install the necessary Python libraries using pip:
-     ```bash
-     pip install tensorflow matplotlib seaborn numpy pandas scikit-learn
-     ```
-
-3. **Run the Script**
-   - Execute the script in a Python environment. The script will automatically:
-     - Load and preprocess the dataset.
-     - Apply data augmentation.
-     - Train the Vision Transformer model.
-     - Evaluate the model and generate performance metrics.
-
-4. **Analyze Results**
-   - Review the confusion matrix and classification report to understand the model's performance.
-   - Visualize misclassified images to identify potential areas for improvement.
-
-5. **Fine-Tuning**
-   - Experiment with different patch sizes, learning rates, and data augmentation techniques to improve the model's accuracy.
 
 ---
 
-## Example Usage
+# Environment
 
-```python
-# Train the model with a specific patch size
-model = create_vit_model(patch_size=32)
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-history = model.fit(train_generator, epochs=10, validation_data=val_generator)
+The experiment was conducted using:
 
-# Evaluate the model on the test set
-Y_pred = model.predict(test_set)
-y_pred = np.argmax(Y_pred, axis=1)
-print(classification_report(test_set.classes, y_pred, target_names=class_names))
+- Google Colab
+- GPU acceleration
+- TensorFlow / Keras framework
+
+GPU acceleration was utilized to reduce training time, especially for Vision Transformer models with smaller patch sizes.
+
+---
+
+# Data Preprocessing
+
+Before training, all images are resized into:
+224 × 224 pixels
+
+
+Data augmentation techniques were applied to improve model generalization:
+
+- Random Horizontal Flip
+- Random Rotation
+- Random Zoom
+- Image Rescaling
+
+The validation and testing datasets only use resizing and normalization without augmentation.
+
+---
+
+# Vision Transformer Architecture
+
+The Vision Transformer (ViT) divides an input image into multiple smaller patches. Each patch is treated as a token and processed using Transformer Encoder blocks.
+
+The implemented ViT consists of:
+
+1. Patch Embedding
+2. Positional Embedding
+3. Multi-Head Self Attention
+4. Transformer Encoder Blocks
+5. MLP Classification Head
+
+The model configuration:
+
+| Parameter | Value |
+|-----------|-------|
+| Input Size | 224 × 224 |
+| Projection Dimension | 256 |
+| Transformer Layers | 6 |
+| Attention Heads | 8 |
+| Optimizer | Adam |
+| Learning Rate | 0.0001 |
+| Activation | Softmax |
+
+---
+
+# Patch Size Experiment
+
+Three different patch sizes were evaluated.
+
+## Patch Size 32×32
+
+A larger patch size produces fewer image tokens:
+224 / 32 = 7
+
+Total tokens:
+7 × 7 = 49 tokens
+
+
+Advantages:
+- Faster training
+- Lower computational cost
+
+Disadvantages:
+- Less detailed feature representation
+- Small disease patterns may be missed
+
+---
+
+## Patch Size 16×16
+
+Patch size 16 produces:
+224 / 16 = 14
+
+Total tokens:
+14 × 14 = 196 tokens
+
+
+This configuration provides a balance between:
+
+- Local feature extraction
+- Global feature understanding
+- Computational efficiency
+
+---
+
+## Patch Size 8×8
+
+Patch size 8 produces:
+224 / 8 = 28
+
+Total tokens:
+28 × 28 = 784 tokens
+
+
+Although smaller patches provide more detailed information, the number of tokens significantly increases the computational complexity of the Transformer self-attention mechanism.
+
+The experiment could not be completed due to limited computational resources on Google Colab GPU.
+
+---
+
+# Experimental Results
+
+## Performance Comparison
+
+| Patch Size | Accuracy | Precision | Recall | F1 Score | Training Time |
+|------------|----------|-----------|--------|----------|---------------|
+| 32×32 | 90.92% | 91.95% | 90.92% | 90.88% | 300.79 s |
+| 16×16 | **97.86%** | **97.87%** | **97.86%** | **97.86%** | 1423.14 s |
+| 8×8 | - | - | - | - | Failed |
+
+---
+
+# Result Analysis
+
+## Patch Size 32×32
+
+The model achieved 90.92% accuracy. The lower performance compared to smaller patches occurs because larger patches contain fewer tokens, resulting in reduced local information. Some disease patterns on leaf surfaces may not be captured effectively.
+
+However, this configuration provides the fastest training time due to lower computational requirements.
+
+---
+
+## Patch Size 16×16
+
+Patch size 16×16 achieved the highest performance with:
+
+- Accuracy: 97.86%
+- Precision: 97.87%
+- Recall: 97.86%
+- F1 Score: 97.86%
+
+This result indicates that patch size 16×16 provides the optimal balance between extracting detailed leaf disease patterns and maintaining manageable computational complexity.
+
+---
+
+## Patch Size 8×8
+
+The patch size 8×8 experiment generated 784 tokens per image. The increased number of tokens significantly increased the memory requirement and computation time of the Transformer attention mechanism.
+
+The experiment was unable to complete because of computational limitations.
+
+---
+
+# Conclusion
+
+Based on the experimental results, the Vision Transformer with **patch size 16×16** achieved the best classification performance for apple leaf disease detection.
+
+The comparison shows:
+
+- Patch 32×32:
+  - Faster computation
+  - Lower accuracy due to limited local feature extraction
+
+- Patch 16×16:
+  - Highest accuracy
+  - Best balance between performance and computational efficiency
+
+- Patch 8×8:
+  - Higher feature detail
+  - Requires significantly larger computational resources
+
+Therefore, **ViT Patch Size 16×16 was selected as the optimal configuration for apple leaf disease classification.**
+
